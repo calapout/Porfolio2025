@@ -1,0 +1,34 @@
+openapi: "3.1.0"
+info:
+  title: "Backend API"
+  description: "Backend API"
+  version: "1.0.0"
+servers:
+  - url: "http://127.0.0.1:8080"
+paths:
+  /api/v1/projects:
+    get:
+      summary: "GET api/v1/projects"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+  /api/v1/projects/{slug}:
+    get:
+      summary: "GET api/v1/projects/{slug}"
+      parameters:
+        - name: "slug"
+          in: "path"
+          required: true
+          schema: {
+            type: "string",
+            pattern: "^[A-Za-z]+(?:-[A-Za-z]+)*$"
+          }
+      responses:
+        "200":
+          description: "OK"
+        "502":
+          description: "Bad Slug"

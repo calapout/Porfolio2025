@@ -1,0 +1,176 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "Slug": {
+      "type": "uid",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "targetField": "Title",
+      "required": true
+    },
+    "Title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "TaskRealized": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": false
+    },
+    "Technologies": {
+      "type": "customField",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "customField": "plugin::multi-select.multi-select",
+      "default": "[]",
+      "options": [
+        "Unity3D",
+        "Unreal Engine 4",
+        "Unreal Engine 5",
+        "Blueprints",
+        "C++",
+        "C#",
+        "Javascript",
+        "Arduino",
+        "Go"
+      ]
+    },
+    "Thumbnail": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Medias": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tag.tag"
+    },
+    "HasPrizes": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": false
+    },
+    "prizes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::prize.prize",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "HasPrizes"
+            },
+            true
+          ]
+        }
+      }
+    },
+    "IsMadeInCompany": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": false
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "IsMadeInCompany"
+            },
+            true
+          ]
+        }
+      }
+    },
+    "AdditionnalCompanyWebsite": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "IsMadeInCompany"
+            },
+            true
+          ]
+        }
+      },
+      "regex": "^https?:\\/\\/(?:localhost(?::\\d+)?|(?:\\d{1,3}\\.){3}\\d{1,3}|(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,})(?:[\\/?#][^\\s]*)?$"
+    }
+  }
+}

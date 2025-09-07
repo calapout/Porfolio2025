@@ -1,0 +1,51 @@
+version: '3'
+services:
+  postgresql:
+    restart: always
+    env_file:
+      - .env
+    image: postgres:12.2-alpine
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+  strapi:
+    restart: always
+    build:
+      context: ./Strapi
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      CLIENT_URL: ${CLIENT_URL}
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgresql
+#  api-gateway:
+#    restart: always
+#    env_file:
+#      - .env
+  frontend:
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./Portfolio
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"

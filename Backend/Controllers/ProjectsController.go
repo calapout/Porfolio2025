@@ -54,6 +54,7 @@ func multipleProjectsHandler(res http.ResponseWriter, req *http.Request) {
 	request, err := http.NewRequest("GET", baseUrl+"/api/projects"+query, nil)
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
+		_, err = res.Write(make([]byte, 0))
 		return
 	}
 	request.Header.Add("Accept", "application/json")
@@ -64,6 +65,14 @@ func multipleProjectsHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 		res.WriteHeader(http.StatusInternalServerError)
+		res.Write(make([]byte, 0))
+		return
+	}
+
+	if clientRes.StatusCode != http.StatusOK {
+		log.Println("Error getting projects: " + clientRes.Status)
+		res.WriteHeader(http.StatusInternalServerError)
+		res.Write(make([]byte, 0))
 		return
 	}
 
@@ -72,6 +81,7 @@ func multipleProjectsHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 		res.WriteHeader(http.StatusInternalServerError)
+		res.Write(make([]byte, 0))
 		return
 	}
 
@@ -79,13 +89,15 @@ func multipleProjectsHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 		res.WriteHeader(http.StatusInternalServerError)
+		res.Write(make([]byte, 0))
 		return
 	}
 	res.WriteHeader(http.StatusOK)
-	_, err = res.Write(responseBuffer)
-	if err != nil {
+	if responseBuffer == nil {
+		res.Write(make([]byte, 0))
 		return
 	}
+	res.Write(responseBuffer)
 }
 
 func (ProjectsController) Setup(r *mux.Router) {

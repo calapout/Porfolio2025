@@ -8,8 +8,8 @@ import naive from 'naive-ui'
 import localeEn from "@Locales/en.json"
 import localeFr from "@Locales/fr.json"
 
-import Router from './Router'
-import App from './App.vue'
+import Router from '@/Router'
+import App from '@/App.vue'
 
 const app = createApp(App)
 const Pinia = createPinia();

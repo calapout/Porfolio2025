@@ -1,4 +1,11 @@
 {
   "projects": "Projects",
-  "about": "About"
+  "loadingProjects": "Loading projects...",
+  "about": "About",
+  "newOrShowoff": "New or showoff",
+  "mentionReceiver": "Mention receiver",
+  "madeInCompany": "Made in company",
+  "personnalProjects": "Personnal projects",
+  "blueRobotAlt": "Blue Robot facing right",
+  "redRobotAlt": "Red Robot facing left"
 }

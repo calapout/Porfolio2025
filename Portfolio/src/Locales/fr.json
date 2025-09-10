@@ -1,4 +1,11 @@
 {
   "projects": "Projets",
-  "about": "A propos"
+  "loadingProjects": "Chargement des projets...",
+  "about": "A propos",
+  "newOrShowoff": "Nouveaux ou mis de l'avant",
+  "mentionReceiver": "Projets ayant reçue une mention",
+  "madeInCompany": "Réaliser en compagnie",
+  "personnalProjects": "Projets personnels",
+  "blueRobotAlt": "Robot bleu regardant vers la droite",
+  "redRobotAlt": "Robot rouge regardant vers la gauche"
 }

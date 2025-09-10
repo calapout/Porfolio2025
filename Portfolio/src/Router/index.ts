@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 
-import {routeArray} from "./Routes"
-import {useAppStore} from "./Stores/App";
-import {i18n} from "./main";
+import {routeArray} from "@/Routes"
+import {useAppStore} from "@Stores/App";
+import {i18n} from "@/main";
 
 
 const supportedLocales: Array<"fr" | "en"> = ['fr', 'en'];
@@ -16,13 +16,13 @@ for (const route of routeArray) {
 }
 routes.push({path: '/:pathMatch(.*)*', redirect: '/fr'})
 
-const router = createRouter({
+const index = createRouter({
     history: createWebHistory(),
     routes,
 })
 
 
-router.afterEach((to) => {
+index.afterEach((to) => {
     const appStore = useAppStore();
 
     // remove trailing /
@@ -47,6 +47,7 @@ router.afterEach((to) => {
     const oppositeLocale = newLocale == 'fr' ? 'en' : 'fr';
     for (const route of routeArray) {
         if(route.routes[newLocale as 'en'|'fr'] == path && oppositeLocale in route.routes) {
+            appStore.currentRouteKey = route.key;
             appStore.routeInOtherLanguage = route.routes[oppositeLocale];
             return;
         }
@@ -54,6 +55,7 @@ router.afterEach((to) => {
 
     // backup to home page in the other locale
     appStore.routeInOtherLanguage = `/${oppositeLocale}`
+    appStore.currentRouteKey = "";
 })
 
-export default router;
+export default index;

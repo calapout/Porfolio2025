@@ -13,4 +13,5 @@ type ProjectModel struct {
 	Medias          []ImageModel `json:"Medias"`
 	Prizes          []PrizeModel `json:"prizes"`
 	Company         CompanyModel `json:"company"`
+	IsNewAndTrendy  bool         `json:"IsNewAndTrendy"`
 }

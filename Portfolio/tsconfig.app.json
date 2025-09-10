@@ -12,6 +12,9 @@
 
     /* ALIASES */
     "paths": {
+      "@/*": [
+        "./src/*"
+      ],
       "@Components/*": [
         "./src/Components/*"
       ],

@@ -4,8 +4,6 @@ module.exports = {
     browser: true,
     es2022: true,
     node: true,
-    // Enables defineProps/defineEmits/etc in <script setup>
-    'vue/setup-compiler-macros': true,
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -17,7 +15,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:vue/vue3-recommended',
+    'plugin:vue/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
   plugins: ['vue', '@typescript-eslint'],

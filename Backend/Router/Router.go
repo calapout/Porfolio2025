@@ -13,6 +13,7 @@ func Setup() {
 	r.StrictSlash(true)
 
 	Controllers.ProjectsController{}.Setup(r)
+	Controllers.UploadsController{}.Setup(r)
 
 	http.Handle("/", handlers.CORS()(r))
 }

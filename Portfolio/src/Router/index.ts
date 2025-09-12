@@ -43,12 +43,28 @@ index.afterEach((to) => {
         i18n.global.locale.value = newLocale;
     }
 
+    document.documentElement.lang = i18n.global.locale.value;
+
     // find the opposite route
     const oppositeLocale = newLocale == 'fr' ? 'en' : 'fr';
+
+    if(path.startsWith('/fr/projet/') || path.startsWith('/en/project/')) {
+        const slug = splittedPaths[2];
+        const route = routeArray.find(route => route.key == "project");
+
+        if(route !== undefined) {
+            appStore.currentRouteKey = route.key;
+            appStore.routeInOtherLanguage = route.routes[oppositeLocale].replace(':slug', slug);
+            document.title = route.titles[newLocale as 'fr'|'en'].replace('{slug}', slug);
+            return;
+        }
+    }
+
     for (const route of routeArray) {
         if(route.routes[newLocale as 'en'|'fr'] == path && oppositeLocale in route.routes) {
             appStore.currentRouteKey = route.key;
             appStore.routeInOtherLanguage = route.routes[oppositeLocale];
+            document.title = route.titles[newLocale as 'fr'|'en'];
             return;
         }
     }

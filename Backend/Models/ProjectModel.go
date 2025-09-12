@@ -9,22 +9,29 @@ import (
 	"strings"
 )
 
+type RealizationPeriod struct {
+	StartingYear int `json:"StartingYear"`
+	EndingYear   int `json:"EndingYear"`
+}
+
 type ProjectModel struct {
-	Title           string       `json:"Title"`
-	Locale          string       `json:"locale"`
-	Description     string       `json:"Description"`
-	TaskRealized    string       `json:"TaskRealized"`
-	Technologies    []string     `json:"Technologies"`
-	HasPrizes       bool         `json:"HasPrizes"`
-	Slug            string       `json:"Slug"`
-	IsMadeInCompany bool         `json:"IsMadeInCompany"`
-	Thumbnail       Media        `json:"Thumbnail"`
-	Medias          []Media      `json:"Media"`
-	Prizes          []PrizeModel `json:"prizes"`
-	Company         CompanyModel `json:"company"`
-	IsNewAndTrendy  bool         `json:"IsNewAndTrendy"`
-	IsFavorite      bool         `json:"IsFavorite"`
-	FavoriteText    string       `json:"FavoriteText"`
+	Title                     string            `json:"Title"`
+	Locale                    string            `json:"locale"`
+	Description               string            `json:"Description"`
+	RealizationPeriod         RealizationPeriod `json:"RealizationPeriod"`
+	TaskRealized              string            `json:"TaskRealized"`
+	Technologies              []string          `json:"Technologies"`
+	HasPrizes                 bool              `json:"HasPrizes"`
+	Slug                      string            `json:"Slug"`
+	IsMadeInCompany           bool              `json:"IsMadeInCompany"`
+	Thumbnail                 Media             `json:"Thumbnail"`
+	Medias                    []Media           `json:"Medias"`
+	Prizes                    []PrizeModel      `json:"Prizes"`
+	Company                   CompanyModel      `json:"Company"`
+	AdditionnalCompanyWebsite string            `json:"AdditionnalCompanyWebsite"`
+	IsNewAndTrendy            bool              `json:"IsNewAndTrendy"`
+	IsFavorite                bool              `json:"IsFavorite"`
+	FavoriteText              string            `json:"FavoriteText"`
 }
 
 func GetProjects(locale string) ([]ProjectModel, error) {

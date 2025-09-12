@@ -1,54 +1,71 @@
 <template>
-  <template v-if="projects.length == 0">
-    <div
-      style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;"
-    >
-      <h1>{{ t('loadingProjects') }}</h1>
-      <n-spin
-        size="large"
-      />
-    </div>
-  </template>
-  <template v-else>
+  <template v-if="projects.length > 0">
     <div
       class="projects"
       style="z-index: 2"
     >
-      <h1>{{ t('projects') }}</h1>
+      <h1>{{ t('projects.projects') }}</h1>
       <div>
         <h2 style="margin-bottom: 0.5rem">
-          {{ t('newOrShowoff') }}
+          {{ t('projects.newOrShowoff') }}
         </h2>
-        <primary-carousel :projects="newAndTrendyProjects" />
+        <primary-carousel-projects :projects="newAndTrendyProjects" />
       </div>
 
       <n-card
         v-if="projectsWithPrize.length > 0"
       >
-        <h2>{{ t('mentionReceiver') }}</h2>
-        <secondary-carousel :projects="projectsWithPrize" />
+        <h2>{{ t('projects.mentionReceiver') }}</h2>
+        <secondary-carousel :projects="projectsWithPrize">
+          <template #tag="{project}">
+            <n-tag
+              v-for="prize in project.Prizes"
+              :key="prize"
+              class="carousel-tag"
+              round
+              type="primary"
+              :bordered="false"
+              @click.prevent
+            >
+              {{ prize.Name }}
+            </n-tag>
+          </template>
+        </secondary-carousel>
       </n-card>
 
       <n-card
         v-if="projectsMadeInCompany.length > 0"
       >
-        <h2>{{ t('madeInCompany') }}</h2>
-        <secondary-carousel :projects="projectsMadeInCompany" />
+        <h2>{{ t('projects.madeInCompany') }}</h2>
+        <secondary-carousel :projects="projectsMadeInCompany">
+          <template #tag="{project}">
+            <n-tag
+              class="carousel-tag"
+              round
+              type="primary"
+              :bordered="false"
+            >
+              {{ project.Company.Name }}
+            </n-tag>
+          </template>
+        </secondary-carousel>
       </n-card>
 
       <div
-        v-if="personnalProjects.length > 0"
+        v-if="projects.length > 0"
       >
-        <h2>{{ t('personnalProjects') }}</h2>
+        <h2 class="all-projects-title">
+          {{ t('projects.allProjects') }}
+        </h2>
         <n-grid
           :cols="4"
-          x-gap="1rem"
-          y-gap="1rem"
+          x-gap="16"
+          y-gap="16"
           responsive="screen"
           style="margin-top: 1rem;"
         >
           <n-grid-item
-            v-for="project in personnalProjects"
+            v-for="project in projects"
             :key="project.Slug"
             style="cursor: pointer;"
             @click.prevent="() => router.push(projectUrl + project.Slug)"
@@ -57,29 +74,17 @@
               height="100%"
               :src="project.Thumbnail.url"
               :alt="project.Thumbnail.alternativeText"
+              object-fit="cover"
             />
           </n-grid-item>
         </n-grid>
       </div>
     </div>
   </template>
-  <div
-    class="parallax-container"
-    :style="{top: lerp(35, 25, scrollPurcentage) + 'dvh'}"
-  >
-    <n-image
-      preview-disabled
-      class="robot-left"
-      src="/Robot_Left.webp"
-      :alt="t('redRobotAlt')"
-    />
-    <n-image
-      preview-disabled
-      class="robot-right"
-      src="/Robot_Right.webp"
-      :alt="t('blueRobotAlt')"
-    />
-  </div>
+  <WaitingForProjects
+    v-else
+    :label="t('projects.loadingProjects')"
+  />
 </template>
 
 <script
@@ -87,20 +92,20 @@
     lang="ts"
 >
 import {useI18n} from "vue-i18n";
-import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import type {ProjectModel} from "@/index";
-import PrimaryCarousel from "@Components/PrimaryCarousel.vue";
+import PrimaryCarouselProjects from "@Components/PrimaryCarouselProjects.vue";
 import SecondaryCarousel from "@Components/SecondaryCarousel.vue";
 import {useRouter} from "vue-router";
 import {ApiRequestGet} from "@/utils.ts";
 import RemoteImage from "@Components/RemoteImage.vue";
+import WaitingForProjects from "@Components/WaitingForProjects.vue";
 
 const {t, locale} = useI18n({useScope: 'global'});
 
 const router = useRouter()
 
 const projects = ref<ProjectModel[]>([])
-const scrollPurcentage = ref(0.0)
 
 const newAndTrendyProjects = computed<ProjectModel[]>(() => {
   return projects.value.filter(project => project.IsNewAndTrendy)
@@ -112,10 +117,6 @@ const projectsWithPrize = computed<ProjectModel[]>(() => {
 
 const projectsMadeInCompany = computed<ProjectModel[]>(() => {
   return projects.value.filter(project => project.IsMadeInCompany)
-})
-
-const personnalProjects = computed<ProjectModel[]>(() => {
-  return projects.value.filter(project => !project.IsMadeInCompany)
 })
 
 const projectUrl = computed(() => {
@@ -131,35 +132,21 @@ const projectUrl = computed(() => {
 
 onMounted(() => {
   getProjects();
-
-  document.addEventListener('scroll', onScroll);
 })
 
-watch(() => locale.value,
+watch(
+    () => locale.value,
     () => {
       getProjects()
-    })
-
-onBeforeUnmount(() => {
-  document.removeEventListener("scroll", onScroll);
-})
-
-function lerp(x: number, y: number, a: number) {
-  return x * (1 - a) + y * a;
-}
-
-function onScroll() {
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-  const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-
-  scrollPurcentage.value = (scrollTop / (scrollHeight - clientHeight));
-}
+    }
+)
 
 function getProjects() {
   ApiRequestGet<ProjectModel[]>(`/projects`)
       .then((newProjects) => {
-        projects.value = newProjects;
+        if (newProjects.statusCode == 200 && newProjects.data != null) {
+          projects.value = newProjects.data;
+        }
       })
       .catch(error => {
         console.error(`Error fetching data: ${error}`);
@@ -172,29 +159,6 @@ function getProjects() {
     scoped
     lang="scss"
 >
-.parallax-container {
-  .robot-left {
-    position: absolute;
-    left: 0;
-    transform: translateX(-40%);
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .robot-right {
-    position: absolute;
-    right: 0;
-    transform: translateX(40%);
-    height: 100%;
-    object-fit: cover;
-  }
-
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 30rem;
-  z-index: 1;
-}
 
 .projects {
   h1 {
@@ -203,6 +167,10 @@ function getProjects() {
 
   h2 {
     margin-left: 42px;
+  }
+
+  .all-projects-title {
+    margin-left: 0px;
   }
 
   :deep(.n-card__content) {
@@ -214,6 +182,12 @@ function getProjects() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.carousel-tag {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
 }
 
 </style>

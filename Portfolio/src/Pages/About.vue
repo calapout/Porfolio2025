@@ -1,17 +1,17 @@
 <template>
-  <h1>{{ t('about') }}</h1>
+  <h1>{{ t('about-me.about') }}</h1>
   <n-card class="about-me-card">
     <figure>
       <n-image
         src="/jimmy_visage.jpg"
         width="200"
         preview-disabled
-        :alt="t('portraitAlt')"
+        :alt="t('about-me.portraitAlt')"
         style="border-radius: 1rem"
       />
       <figcaption>
         <h2>Jimmy Tremblay-Bernier</h2>
-        <h3>Diplomé en génie logiciel</h3>
+        <h3>{{ t('about-me.title') }}</h3>
       </figcaption>
     </figure>
     <div>
@@ -37,7 +37,7 @@
     </div>
   </n-card>
   <template v-if="projectsIReallyLike.length > 0">
-    <h2>{{ t("projectIReallyLike") }}</h2>
+    <h2>{{ t('about-me.projectIReallyLike') }}</h2>
     <n-card
       v-for="project in projectsIReallyLike"
       :key="project.Slug"
@@ -56,7 +56,7 @@
         :to="'/fr/projet/' + project.Slug"
         class="see-more"
       >
-        {{ t('seeMoreDetails') }}
+        {{ t('about-me.seeMoreDetails') }}
         <n-icon>
           <ArrowRight />
         </n-icon>
@@ -79,7 +79,7 @@ const {t, locale} = useI18n({useScope: 'global'});
 const projectsIReallyLike = ref<ProjectModel[]>([]);
 
 const texts = computed(() => {
-  return JSON.parse(t('aboutMeRTF')) as (string | string[])[];
+  return JSON.parse(t('about-me.aboutMeRTF')) as (string | string[])[];
 })
 
 onMounted(() => {
@@ -96,7 +96,9 @@ watch(
 function getProjects() {
   ApiRequestGet<ProjectModel[]>(`/projects/favorites`)
       .then((newProjects) => {
-        projectsIReallyLike.value = newProjects;
+        if (newProjects.statusCode == 200 && newProjects.data != null) {
+          projectsIReallyLike.value = newProjects.data;
+        }
       })
       .catch(error => {
         console.error(`Error fetching data: ${error}`);

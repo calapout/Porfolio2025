@@ -1,7 +1,9 @@
 <template>
   <n-image
     v-bind="props"
+    ref="image"
     :src="`${apiBaseUrl}${props.src}`"
+    lazy
   />
 </template>
 
@@ -9,7 +11,7 @@
 
 import {storeToRefs} from "pinia";
 import {useAppStore} from "@Stores/App.ts";
-import type {ImgHTMLAttributes} from "vue";
+import {type ImgHTMLAttributes, ref} from "vue";
 
 const appStore = useAppStore()
 
@@ -31,7 +33,7 @@ type ImageProps = {
   previewDisabled: boolean,
   loadDescription: string,
   onError: (e: Event) => void,
-  onLoad: (e: Event) => void
+  onLoad: (e: Event) => void,
 }
 
 const props = defineProps<Partial<ImageProps>>()
@@ -39,7 +41,17 @@ const {
   apiBaseUrl,
 } = storeToRefs(appStore)
 
+const image = ref<HTMLElement | null>(null)
+
 </script>
 
 <style scoped lang="scss">
+.n-image {
+  :deep(img) {
+    width: 100%;
+    height: 100%;
+  }
+  width: 100%;
+  height: 100%;
+}
 </style>

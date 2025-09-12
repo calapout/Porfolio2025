@@ -21,7 +21,7 @@ export type BitmapModel = {
     sizeInBytes: number
 }
 
-export type ImageModel = {
+export type MediaModel = {
     name: string,
     alternativeText: string,
     caption: string,
@@ -51,11 +51,16 @@ export type ProjectModel = {
     HasPrizes: boolean,
     Slug: string,
     IsMadeInCompany: boolean,
-    Thumbnail: ImageModel,
-    Medias: ImageModel[],
+    Thumbnail: MediaModel,
+    Medias: MediaModel[],
     Prizes: PrizeModel[],
     Company: CompanyModel,
-    IsNewAndTrendy: boolean
+    AdditionnalCompanyWebsite: string,
+    IsNewAndTrendy: boolean,
     IsFavorite: boolean,
-    FavoriteText: string
+    FavoriteText: string,
+    RealizationPeriod: {
+        StartingYear: number,
+        EndingYear: number
+    }
 }

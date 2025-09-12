@@ -20,15 +20,19 @@
         draggable
       >
         <n-carousel-item
-          v-for="(project) in props.projects"
-          :key="project.Slug"
-          @click.prevent="() => GoToProjectPage(project.Slug)"
+          v-for="(media) in props.medias"
+          :key="media.hash"
         >
           <remote-image
-            preview-disabled
-            :src="project.Thumbnail.url"
-            :alt="project.Thumbnail.alternativeText"
+            v-if="media.mime.startsWith('image/')"
+            :src="media.url"
+            :alt="media.alternativeText"
             object-fit="cover"
+          />
+          <remote-video
+            v-else-if="media.mime.startsWith('video/')"
+            :src="media.url"
+            controls
           />
         </n-carousel-item>
         <template #dots="{currentIndex, total, to}">
@@ -54,7 +58,7 @@
     </div>
     <div class="carousel-dots">
       <span
-        v-for="n in projects.length"
+        v-for="n in props.medias.length"
         :key="n"
         class="carousel-dot"
         :class="{active: n-1 == carouselRef?.getCurrentIndex()}"
@@ -68,19 +72,17 @@
 
 import {AngleLeft, AngleRight} from "@vicons/fa";
 import {type CarouselInst, NButton, NCarousel, NCarouselItem, NIcon} from "naive-ui";
-import type {ProjectModel} from "@/index";
+import type {MediaModel} from "@/index";
 import {useTemplateRef} from "vue";
-import {useAppStore} from "@Stores/App.ts";
-import {storeToRefs} from "pinia";
-import {GoToProjectPage} from "@/utils.ts";
+
 import ColorPalette from "@/ColorPalette.ts";
+
 import RemoteImage from "@Components/RemoteImage.vue";
+import RemoteVideo from "@Components/RemoteVideo.vue";
 
 type Props = {
-  projects: ProjectModel[]
+  medias: MediaModel[]
 }
-
-const appStore = useAppStore()
 
 const props = defineProps<Props>();
 
@@ -90,6 +92,11 @@ const carouselRef = useTemplateRef<CarouselInst>("carousel")
 
 <style scoped lang="scss">
 .carousel {
+  :deep(.n-carousel__slide) {
+    align-items: center;
+    display: flex;
+    background-color: v-bind('ColorPalette.surface["0"]');
+  }
   .n-image {
     :deep(img) {
       width: 100%;
@@ -147,10 +154,8 @@ const carouselRef = useTemplateRef<CarouselInst>("carousel")
   }
 
   display: flex;
-  height: 30rem;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-bottom: 30px;
 }
 </style>

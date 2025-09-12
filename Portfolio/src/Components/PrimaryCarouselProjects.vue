@@ -14,12 +14,9 @@
       </n-button>
       <n-carousel
         ref="carousel"
-        :space-between="16"
-        :slides-per-view="Math.min(projects.length, 4)"
-        :centered-slides="false"
-        :loop="true"
         :show-arrow="false"
         :show-dots="false"
+        :loop="true"
         draggable
       >
         <n-carousel-item
@@ -32,10 +29,6 @@
             :src="project.Thumbnail.url"
             :alt="project.Thumbnail.alternativeText"
             object-fit="cover"
-          />
-          <slot
-            name="tag"
-            :project="project"
           />
         </n-carousel-item>
         <template #dots="{currentIndex, total, to}">
@@ -77,8 +70,8 @@ import {AngleLeft, AngleRight} from "@vicons/fa";
 import {type CarouselInst, NButton, NCarousel, NCarouselItem, NIcon} from "naive-ui";
 import type {ProjectModel} from "@/index";
 import {useTemplateRef} from "vue";
-import ColorPalette from "@/ColorPalette.ts";
 import {GoToProjectPage} from "@/utils.ts";
+import ColorPalette from "@/ColorPalette.ts";
 import RemoteImage from "@Components/RemoteImage.vue";
 
 type Props = {
@@ -86,6 +79,7 @@ type Props = {
 }
 
 const props = defineProps<Props>();
+
 const carouselRef = useTemplateRef<CarouselInst>("carousel")
 
 </script>
@@ -149,8 +143,10 @@ const carouselRef = useTemplateRef<CarouselInst>("carousel")
   }
 
   display: flex;
+  height: 30rem;
   flex-direction: column;
-  height: 15rem;
+  align-items: center;
+  width: 100%;
   padding-bottom: 30px;
 }
 </style>

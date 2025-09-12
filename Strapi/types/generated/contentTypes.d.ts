@@ -477,11 +477,12 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    company: Schema.Attribute.Relation<'oneToOne', 'api::company.company'>;
+    Company: Schema.Attribute.Relation<'oneToOne', 'api::company.company'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Description: Schema.Attribute.Text &
+    Description: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -534,8 +535,17 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
-    prizes: Schema.Attribute.Relation<'oneToMany', 'api::prize.prize'>;
+    Prizes: Schema.Attribute.Relation<'oneToMany', 'api::prize.prize'>;
     publishedAt: Schema.Attribute.DateTime;
+    RealizationPeriod: Schema.Attribute.Component<
+      'util.realization-period',
+      false
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     Slug: Schema.Attribute.UID<'Title'> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -543,7 +553,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    tags: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'>;
+    Tags: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'>;
     TaskRealized: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

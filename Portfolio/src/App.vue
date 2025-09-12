@@ -18,26 +18,30 @@
       <div class="outter-wrapper">
         <div class="inner-wrapper">
           <router-view />
+          <ParallaxRobots />
         </div>
       </div>
     </main>
     <footer>
       <p>Jimmy Tremblay-Bernier © {{ new Date().getFullYear() }}</p>
-      <p>Viviane Badea © {{ t('veeMention') }}</p>
+      <p>Viviane Badea © {{ t('global.veeMention') }}</p>
     </footer>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
-import {computed, h} from "vue";
+import {computed, type DefineComponent, h} from "vue";
 import {storeToRefs} from "pinia";
-import {darkTheme, NConfigProvider, NMenu, NGlobalStyle} from 'naive-ui'
+import {darkTheme, NConfigProvider, NMenu, NGlobalStyle, NIcon} from 'naive-ui'
 import {RouterLink, RouterView} from "vue-router";
 
 import {useAppStore} from "@Stores/App.ts";
 import {ThemeOverrides} from "@/ThemeOverrides.ts";
 import ColorPalette from "@/ColorPalette.ts";
+
+import ParallaxRobots from "@Components/ParallaxRobots.vue";
+import {Envelope, Github, LinkedinIn} from "@vicons/fa";
 
 const {t, locale} = useI18n({useScope: 'global'});
 const appStore = useAppStore();
@@ -49,40 +53,55 @@ const oppositeLocale = computed(() => {
 })
 
 const menuOptions = computed(() => {
+      const routes = [];
+
       if (locale.value == 'fr') {
-        return [
-          generateMenuEntry(t('projects'), 'projects', '/fr'),
-          generateMenuEntry(t('about'), 'about', '/fr/a-propos'),
-          {
-            type: 'divider',
-            key: 'divider',
-            show: true,
-          },
-          generateMenuEntry(oppositeLocale.value.toUpperCase(), 'opposite-locale', routeInOtherLanguage.value),
-        ]
+        routes.push(
+            generateTextMenuEntry(t('menu.projects'), 'projects', '/fr'),
+            generateTextMenuEntry(t('menu.about'), 'about', '/fr/a-propos'),
+        )
       } else if (locale.value == 'en') {
-        return [
-          generateMenuEntry(t('projects'), 'projects', '/en'),
-          generateMenuEntry(t('about'), 'about', '/en/about'),
-          {
-            type: 'divider',
-            key: 'divider',
-            show: true,
-          },
-          generateMenuEntry(oppositeLocale.value.toUpperCase(), 'opposite-locale', routeInOtherLanguage.value),
-        ]
+        routes.push(
+            generateTextMenuEntry(t('menu.projects'), 'projects', '/en'),
+            generateTextMenuEntry(t('menu.about'), 'about', '/en/about'),
+        );
       }
-      return []
+
+      routes.push(
+          generateTextMenuEntry(t('menu.downloadCV'), 'CV', '/CV.pdf', false),
+          generateIconMenuEntry(LinkedinIn, 'linkedin', 'https://www.linkedin.com/in/jimmy-tremblay-bernier/', false),
+          generateIconMenuEntry(Github, 'github', 'https://github.com/calapout', false),
+          generateIconMenuEntry(Envelope, 'email', 'mailto:tremblaybernierjimmy@protonmail.com', false),
+          generateTextMenuEntry(oppositeLocale.value.toUpperCase(), 'opposite-locale', routeInOtherLanguage.value),
+      )
+
+      return routes;
     }
 )
 
-function generateMenuEntry(label: string, key: string, to: string) {
+function generateTextMenuEntry(label: string, key: string, to: string, local: boolean = true) {
+  if (local) {
+    return {
+      label: () =>
+          h(
+              RouterLink,
+              {
+                to
+              },
+              {
+                default: () => label
+              }
+          ),
+      key,
+    }
+  }
   return {
     label: () =>
         h(
-            RouterLink,
+            "a",
             {
-              to
+              href: to,
+              target: "_blank",
             },
             {
               default: () => label
@@ -90,9 +109,36 @@ function generateMenuEntry(label: string, key: string, to: string) {
         ),
     key,
   }
-
-
 }
+
+function generateIconMenuEntry(icon: Partial<DefineComponent>, key: string, to: string, local: boolean = true) {
+  if (local) {
+    return {
+      label: () =>
+          h(
+              RouterLink,
+              {
+                to
+              },
+              h(NIcon, null, {default: () => h(icon)})
+          ),
+      key,
+    }
+  }
+  return {
+    label: () =>
+        h(
+            "a",
+            {
+              href: to,
+              target: "_blank",
+            },
+            h(NIcon, null, {default: () => h(icon)})
+        ),
+    key,
+  }
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -181,6 +227,8 @@ function generateMenuEntry(label: string, key: string, to: string) {
 }
 
 .n-menu-item-content {
+  border-radius: 0.75rem;
+
   &:hover {
     background: var(--n-item-color-hover);
   }
@@ -197,7 +245,5 @@ function generateMenuEntry(label: string, key: string, to: string) {
     padding: 0.75rem 0.5rem;
     border-radius: 0.5rem;
   }
-
-  border-radius: 0.75rem;
 }
 </style>

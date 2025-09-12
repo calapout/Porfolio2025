@@ -56,5 +56,9 @@ export const ThemeOverrides: GlobalThemeOverrides = {
     },
     Card: {
         color: colorPalette.surface["10"],
-    }
+    },
+    Tag: {
+        colorPrimary: colorPalette.primary["20"],
+        textColorPrimary: colorPalette.text.light,
+    },
 }

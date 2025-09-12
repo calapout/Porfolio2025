@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-09-11T16:48:48.875Z"
+    "x-generation-date": "2025-09-12T19:23:34.977Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -4445,6 +4445,7 @@
             "required": [
               "Slug",
               "Title",
+              "Description",
               "HasPrizes",
               "IsMadeInCompany"
             ],
@@ -4452,6 +4453,9 @@
             "properties": {
               "Slug": {
                 "type": "string"
+              },
+              "RealizationPeriod": {
+                "$ref": "#/components/schemas/UtilRealizationPeriodComponent"
               },
               "Title": {
                 "type": "string"
@@ -4488,7 +4492,7 @@
                   "example": "string or id"
                 }
               },
-              "tags": {
+              "Tags": {
                 "type": "array",
                 "items": {
                   "oneOf": [
@@ -4505,7 +4509,7 @@
               "HasPrizes": {
                 "type": "boolean"
               },
-              "prizes": {
+              "Prizes": {
                 "type": "array",
                 "items": {
                   "oneOf": [
@@ -4522,7 +4526,7 @@
               "IsMadeInCompany": {
                 "type": "boolean"
               },
-              "company": {
+              "Company": {
                 "oneOf": [
                   {
                     "type": "integer"
@@ -4606,6 +4610,7 @@
         "required": [
           "Slug",
           "Title",
+          "Description",
           "HasPrizes",
           "IsMadeInCompany"
         ],
@@ -4618,6 +4623,9 @@
           },
           "Slug": {
             "type": "string"
+          },
+          "RealizationPeriod": {
+            "$ref": "#/components/schemas/UtilRealizationPeriodComponent"
           },
           "Title": {
             "type": "string"
@@ -5359,7 +5367,7 @@
               }
             }
           },
-          "tags": {
+          "Tags": {
             "type": "array",
             "items": {
               "type": "object",
@@ -5430,7 +5438,7 @@
           "HasPrizes": {
             "type": "boolean"
           },
-          "prizes": {
+          "Prizes": {
             "type": "array",
             "items": {
               "type": "object",
@@ -5501,7 +5509,7 @@
           "IsMadeInCompany": {
             "type": "boolean"
           },
-          "company": {
+          "Company": {
             "type": "object",
             "properties": {
               "id": {
@@ -5631,6 +5639,9 @@
                 },
                 "Slug": {
                   "type": "string"
+                },
+                "RealizationPeriod": {
+                  "$ref": "#/components/schemas/UtilRealizationPeriodComponent"
                 },
                 "Title": {
                   "type": "string"
@@ -5903,7 +5914,7 @@
                     }
                   }
                 },
-                "tags": {
+                "Tags": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -5920,7 +5931,7 @@
                 "HasPrizes": {
                   "type": "boolean"
                 },
-                "prizes": {
+                "Prizes": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -5937,7 +5948,7 @@
                 "IsMadeInCompany": {
                   "type": "boolean"
                 },
-                "company": {
+                "Company": {
                   "type": "object",
                   "properties": {
                     "id": {
@@ -6024,6 +6035,20 @@
           },
           "meta": {
             "type": "object"
+          }
+        }
+      },
+      "UtilRealizationPeriodComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "StartingYear": {
+            "type": "integer"
+          },
+          "EndingYear": {
+            "type": "integer"
           }
         }
       },

@@ -22,13 +22,14 @@
         <n-carousel-item
           v-for="(project) in props.projects"
           :key="project.Slug"
-          @click.prevent="() => {console.log(projectUrl + project.Slug); router.push(projectUrl + project.Slug)}"
+          @click.prevent="() => GoToProjectPage(project.Slug)"
         >
-          <img
-            height="100%"
-            :src="apiBaseUrl + project.Thumbnail.url"
+          <remote-image
+            preview-disabled
+            :src="project.Thumbnail.url"
             :alt="project.Thumbnail.alternativeText"
-          >
+            object-fit="cover"
+          />
         </n-carousel-item>
         <template #dots="{currentIndex, total, to}">
           <div class="carousel-dots">
@@ -68,12 +69,12 @@
 import {AngleLeft, AngleRight} from "@vicons/fa";
 import {type CarouselInst, NButton, NCarousel, NCarouselItem, NIcon} from "naive-ui";
 import type {ProjectModel} from "@/index";
-import {computed, useTemplateRef} from "vue";
+import {useTemplateRef} from "vue";
 import {useAppStore} from "@Stores/App.ts";
 import {storeToRefs} from "pinia";
-import {useI18n} from "vue-i18n";
-import {useRouter} from "vue-router";
+import {GoToProjectPage} from "@/utils.ts";
 import ColorPalette from "@/ColorPalette.ts";
+import RemoteImage from "@Components/RemoteImage.vue";
 
 type Props = {
   projects: ProjectModel[]
@@ -83,39 +84,19 @@ const appStore = useAppStore()
 
 const props = defineProps<Props>();
 
-const {locale} = useI18n({useScope: 'global'})
-
-const router = useRouter()
-
-const {
-  apiBaseUrl
-} = storeToRefs(appStore)
 const carouselRef = useTemplateRef<CarouselInst>("carousel")
-
-const projectUrl = computed(() => {
-  if (locale.value == "fr") {
-    return "/fr/projet/";
-  }
-
-  if (locale.value == "en") {
-    return "/en/project/";
-  }
-  return "";
-})
 
 </script>
 
 <style scoped lang="scss">
 .carousel {
-  img {
+  .n-image {
+    :deep(img) {
+      width: 100%;
+    }
     cursor: pointer;
-    display: flex;
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: cover;
-    object-position: center;
-    width: 100%;
     height: 100%;
+    width: 100%;
   }
 
   .row {
@@ -170,5 +151,6 @@ const projectUrl = computed(() => {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding-bottom: 30px;
 }
 </style>

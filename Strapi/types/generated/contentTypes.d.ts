@@ -419,41 +419,6 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiDefaultThumbnailDefaultThumbnail
-  extends Struct.SingleTypeSchema {
-  collectionName: 'default_thumbnails';
-  info: {
-    displayName: 'Default Thumbnail';
-    pluralName: 'default-thumbnails';
-    singularName: 'default-thumbnail';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: false;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::default-thumbnail.default-thumbnail'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    Thumbnail: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiPrizePrize extends Struct.CollectionTypeSchema {
   collectionName: 'prizes';
   info: {
@@ -522,8 +487,21 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    FavoriteText: Schema.Attribute.RichText &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     HasPrizes: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    IsFavorite: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -1158,7 +1136,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::company.company': ApiCompanyCompany;
-      'api::default-thumbnail.default-thumbnail': ApiDefaultThumbnailDefaultThumbnail;
       'api::prize.prize': ApiPrizePrize;
       'api::project.project': ApiProjectProject;
       'api::tag.tag': ApiTagTag;

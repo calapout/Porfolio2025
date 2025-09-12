@@ -56,4 +56,6 @@ export type ProjectModel = {
     Prizes: PrizeModel[],
     Company: CompanyModel,
     IsNewAndTrendy: boolean
+    IsFavorite: boolean,
+    FavoriteText: string
 }

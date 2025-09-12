@@ -1,6 +1,6 @@
 package Models
 
-type BitmapModel struct {
+type MediaDetails struct {
 	Ext         string  `json:"ext"`
 	Url         string  `json:"url"`
 	Hash        string  `json:"hash"`
@@ -12,17 +12,17 @@ type BitmapModel struct {
 	SizeInBytes int     `json:"sizeInBytes"`
 }
 
-type ImageModel struct {
+type Media struct {
 	Name            string `json:"name"`
 	AlternativeText string `json:"alternativeText"`
 	Caption         string `json:"caption"`
 	Width           int    `json:"width"`
 	Height          int    `json:"height"`
 	Formats         struct {
-		Large     BitmapModel `json:"large"`
-		Small     BitmapModel `json:"small"`
-		Medium    BitmapModel `json:"medium"`
-		Thumbnail BitmapModel `json:"thumbnail"`
+		Large     MediaDetails `json:"large"`
+		Small     MediaDetails `json:"small"`
+		Medium    MediaDetails `json:"medium"`
+		Thumbnail MediaDetails `json:"thumbnail"`
 	} `json:"formats"`
 	Hash             string      `json:"hash"`
 	Ext              string      `json:"ext"`

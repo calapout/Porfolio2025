@@ -180,6 +180,33 @@
         }
       },
       "default": false
+    },
+    "IsFavorite": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "default": false
+    },
+    "FavoriteText": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "IsFavorite"
+            },
+            true
+          ]
+        }
+      }
     }
   }
 }

@@ -15,8 +15,8 @@
       <n-carousel
         ref="carousel"
         :space-between="16"
-        :slides-per-view="4"
-        :centered-slides="true"
+        :slides-per-view="Math.min(projects.length, 4)"
+        :centered-slides="false"
         :loop="true"
         :show-arrow="false"
         :show-dots="false"
@@ -25,13 +25,14 @@
         <n-carousel-item
           v-for="(project) in props.projects"
           :key="project.Slug"
-          @click.prevent="() => router.push(projectUrl + project.Slug)"
+          @click.prevent="() => GoToProjectPage(project.Slug)"
         >
-          <img
-            height="100%"
-            :src="apiBaseUrl + project.Thumbnail.url"
+          <remote-image
+            preview-disabled
+            :src="project.Thumbnail.url"
             :alt="project.Thumbnail.alternativeText"
-          >
+            object-fit="cover"
+          />
         </n-carousel-item>
         <template #dots="{currentIndex, total, to}">
           <div class="carousel-dots">
@@ -71,52 +72,29 @@
 import {AngleLeft, AngleRight} from "@vicons/fa";
 import {type CarouselInst, NButton, NCarousel, NCarouselItem, NIcon} from "naive-ui";
 import type {ProjectModel} from "@/index";
-import {computed, useTemplateRef} from "vue";
-import {useAppStore} from "@Stores/App.ts";
-import {storeToRefs} from "pinia";
-import {useI18n} from "vue-i18n";
-import {useRouter} from "vue-router";
+import {useTemplateRef} from "vue";
 import ColorPalette from "@/ColorPalette.ts";
+import {GoToProjectPage} from "@/utils.ts";
+import RemoteImage from "@Components/RemoteImage.vue";
 
 type Props = {
   projects: ProjectModel[]
 }
 
-const appStore = useAppStore()
-
 const props = defineProps<Props>();
-
-const {locale} = useI18n({useScope: 'global'})
-
-const router = useRouter()
-
-const {
-  apiBaseUrl
-} = storeToRefs(appStore)
 const carouselRef = useTemplateRef<CarouselInst>("carousel")
-
-const projectUrl = computed(() => {
-  if (locale.value == "fr") {
-    return "/fr/projet/";
-  }
-
-  if (locale.value == "en") {
-    return "/en/project/";
-  }
-  return "";
-})
 
 </script>
 
 <style scoped lang="scss">
 .carousel {
-  img {
+  .n-image {
+    :deep(img) {
+      width: 100%;
+    }
     cursor: pointer;
-    display: flex;
-    max-height: 100%;
-    max-width: 100%;
+    height: 100%;
     width: 100%;
-    height: auto;
   }
 
   .row {
@@ -168,6 +146,7 @@ const projectUrl = computed(() => {
 
   display: flex;
   flex-direction: column;
-  height: 10rem;
+  height: 15rem;
+  padding-bottom: 30px;
 }
 </style>

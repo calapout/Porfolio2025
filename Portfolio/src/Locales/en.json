@@ -1,11 +1,16 @@
 {
+  "veeMention": "Images of the robots (concept art made for the 2025 edition of the gamelab)",
   "projects": "Projects",
   "loadingProjects": "Loading projects...",
-  "about": "About",
+  "portraitAlt": "A portrait of me",
   "newOrShowoff": "New or showoff",
   "mentionReceiver": "Mention receiver",
   "madeInCompany": "Made in company",
   "personnalProjects": "Personnal projects",
   "blueRobotAlt": "Blue Robot facing right",
-  "redRobotAlt": "Red Robot facing left"
+  "redRobotAlt": "Red Robot facing left",
+  "about": "About",
+  "aboutMeRTF": "[\"Recently graduated from ÉTS in software engineering, and I’m passionate about developing interactive applications, whether video games, immersive experiences, or museum exhibitions\",\"Throughout my journey, I’ve had the chance to gain hands-on industry experience:\",[\"An internship at Creo as a museum experience developer.\",\"Two internships at Triotech in interactive attraction development\"],\"In parallel, I was an active member of the Conjure club, where I collaborated on creative and stimulating projects. I also took part in Ubisoft’s Gamelab competition, a rewarding experience that allowed me to push my limits in game design and development.\",\"My specialization courses enabled me to develop expertise in low-level development: embedded programming (STM32, Arduino), operating system design and parallel systems, as well as graphics development with OpenGL.\",\"Today, I’m looking for my next professional challenge and I’m open to several fields where I can put my rigor, creativity, and passion for technology to good use.\"]",
+  "projectIReallyLike": "Personnal favorites",
+  "seeMoreDetails": "See More Details"
 }

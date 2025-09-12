@@ -22,7 +22,8 @@
       </div>
     </main>
     <footer>
-      <p>Jimmy Tremblay-Bernier © 2025 - {{ new Date().getFullYear() }}</p>
+      <p>Jimmy Tremblay-Bernier © {{ new Date().getFullYear() }}</p>
+      <p>Viviane Badea © {{ t('veeMention') }}</p>
     </footer>
   </n-config-provider>
 </template>
@@ -114,6 +115,7 @@ function generateMenuEntry(label: string, key: string, to: string) {
   main {
     .outter-wrapper {
       .inner-wrapper {
+        width: 100%;
         max-width: 1000px;
         display: flex;
         flex-direction: column;
@@ -123,6 +125,7 @@ function generateMenuEntry(label: string, key: string, to: string) {
       display: flex;
       justify-content: center;
       padding: 1rem;
+      width: 100%;
       max-width: 1200px;
       flex-grow: 1;
     }
@@ -139,6 +142,7 @@ function generateMenuEntry(label: string, key: string, to: string) {
     bottom: 0;
     background-color: v-bind('ColorPalette.surface["0"]');
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1rem 1rem;

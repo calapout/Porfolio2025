@@ -1,11 +1,16 @@
 {
+  "veeMention": "Images des robots (concept art réalisées durant l'édition 2025 du gamelab)",
   "projects": "Projets",
   "loadingProjects": "Chargement des projets...",
-  "about": "A propos",
+    "portraitAlt": "Un portrait de moi",
   "newOrShowoff": "Nouveaux ou mis de l'avant",
   "mentionReceiver": "Projets ayant reçue une mention",
   "madeInCompany": "Réaliser en compagnie",
   "personnalProjects": "Projets personnels",
   "blueRobotAlt": "Robot bleu regardant vers la droite",
-  "redRobotAlt": "Robot rouge regardant vers la gauche"
+  "redRobotAlt": "Robot rouge regardant vers la gauche",
+  "about": "À propos",
+  "aboutMeRTF": "[\"Récemment diplômé de l’ÉTS en génie logiciel et je suis passionné par le développement d’applications interactives, qu’il s’agisse de jeux vidéo, d’expériences immersives ou d’expositions muséales\",\"Au fil de mon parcours, j’ai eu la chance d’acquérir de l’expérience concrète en entreprise:\",[\"Un stage chez Creo en tant que développeur d'expérience muséale.\",\"Deux stages chez Triotech en développement d'attraction interractives\"],\"En parallèle, j’ai participé activement au club Conjure, où j’ai pu collaborer sur des projets créatifs et stimulants. J’ai également pris part au concours Gamelab d’Ubisoft, une expérience enrichissante qui m’a permis de repousser mes limites en conception et développement de jeux.\",\"Mes cours de spécialisation m’ont permis de développer une expertise en développement bas niveau : programmation embarquée (STM32, Arduino), conception de systèmes d’exploitation et systèmes parallèles, ainsi que développement graphique en OpenGL.\",\"Aujourd’hui, je suis à la recherche de mon prochain défi professionnel et je suis ouvert à plusieurs domaines où je pourrai mettre à profit ma rigueur, ma créativité et ma passion pour la technologie.\"]",
+  "projectIReallyLike": "Projets coup de coeur",
+  "seeMoreDetails": "Voir plus de détails"
 }

@@ -10,16 +10,20 @@
     </div>
   </template>
   <template v-else>
-    <div style="z-index: 2">
+    <div
+      class="projects"
+      style="z-index: 2"
+    >
       <h1>{{ t('projects') }}</h1>
-      <div style="margin-bottom: 3rem;">
-        <h2>{{ t('newOrShowoff') }}</h2>
+      <div>
+        <h2 style="margin-bottom: 0.5rem">
+          {{ t('newOrShowoff') }}
+        </h2>
         <primary-carousel :projects="newAndTrendyProjects" />
       </div>
 
       <n-card
         v-if="projectsWithPrize.length > 0"
-        style="margin-bottom: 1rem;"
       >
         <h2>{{ t('mentionReceiver') }}</h2>
         <secondary-carousel :projects="projectsWithPrize" />
@@ -27,7 +31,6 @@
 
       <n-card
         v-if="projectsMadeInCompany.length > 0"
-        style="margin-bottom: 1rem;"
       >
         <h2>{{ t('madeInCompany') }}</h2>
         <secondary-carousel :projects="projectsMadeInCompany" />
@@ -35,7 +38,6 @@
 
       <div
         v-if="personnalProjects.length > 0"
-        style="margin-bottom: 1rem;"
       >
         <h2>{{ t('personnalProjects') }}</h2>
         <n-grid
@@ -51,11 +53,11 @@
             style="cursor: pointer;"
             @click.prevent="() => router.push(projectUrl + project.Slug)"
           >
-            <img
+            <RemoteImage
               height="100%"
-              :src="apiBaseUrl + project.Thumbnail.url"
+              :src="project.Thumbnail.url"
               :alt="project.Thumbnail.alternativeText"
-            >
+            />
           </n-grid-item>
         </n-grid>
       </div>
@@ -65,16 +67,18 @@
     class="parallax-container"
     :style="{top: lerp(35, 25, scrollPurcentage) + 'dvh'}"
   >
-    <img
+    <n-image
+      preview-disabled
       class="robot-left"
       src="/Robot_Left.webp"
       :alt="t('redRobotAlt')"
-    >
-    <img
+    />
+    <n-image
+      preview-disabled
       class="robot-right"
       src="/Robot_Right.webp"
       :alt="t('blueRobotAlt')"
-    >
+    />
   </div>
 </template>
 
@@ -83,22 +87,17 @@
     lang="ts"
 >
 import {useI18n} from "vue-i18n";
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
-import {storeToRefs} from 'pinia'
-import {useAppStore} from '@Stores/App'
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import type {ProjectModel} from "@/index";
 import PrimaryCarousel from "@Components/PrimaryCarousel.vue";
 import SecondaryCarousel from "@Components/SecondaryCarousel.vue";
 import {useRouter} from "vue-router";
+import {ApiRequestGet} from "@/utils.ts";
+import RemoteImage from "@Components/RemoteImage.vue";
 
 const {t, locale} = useI18n({useScope: 'global'});
 
-const appStore = useAppStore()
 const router = useRouter()
-
-const {
-  apiBaseUrl
-} = storeToRefs(appStore)
 
 const projects = ref<ProjectModel[]>([])
 const scrollPurcentage = ref(0.0)
@@ -131,23 +130,15 @@ const projectUrl = computed(() => {
 })
 
 onMounted(() => {
-  fetch(`${apiBaseUrl.value}/projects?locale=${locale.value}`)
-      .then(response => {
-        if (response.status != 200) {
-          throw new Error(`Status code: ${response.status}`)
-        }
-
-        return response.json()
-      })
-      .then((data: ProjectModel[]) => {
-        projects.value = data;
-      })
-      .catch(error => {
-        console.error(`Error fetching data: ${error}`);
-      })
+  getProjects();
 
   document.addEventListener('scroll', onScroll);
 })
+
+watch(() => locale.value,
+    () => {
+      getProjects()
+    })
 
 onBeforeUnmount(() => {
   document.removeEventListener("scroll", onScroll);
@@ -162,8 +153,17 @@ function onScroll() {
   const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
   const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
 
-  console.log(scrollTop / (scrollHeight - clientHeight))
   scrollPurcentage.value = (scrollTop / (scrollHeight - clientHeight));
+}
+
+function getProjects() {
+  ApiRequestGet<ProjectModel[]>(`/projects`)
+      .then((newProjects) => {
+        projects.value = newProjects;
+      })
+      .catch(error => {
+        console.error(`Error fetching data: ${error}`);
+      })
 }
 </script>
 
@@ -195,4 +195,25 @@ function onScroll() {
   height: 30rem;
   z-index: 1;
 }
+
+.projects {
+  h1 {
+    margin-left: 42px;
+  }
+
+  h2 {
+    margin-left: 42px;
+  }
+
+  :deep(.n-card__content) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 </style>
